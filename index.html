@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<!-- Bootstrap CSS CDN  -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title></title>
+</head>
+<body>
+
+	<div class = 'container'> 
+
+		<div class = 'row'> 
+			<div class = 'title col-sm-12'> 
+				<h3> Weater Dashboard </h3>
+			</div>
+		</div>
+
+		<div id = 'row' class = 'row'>
+			<div class = 'city col-sm-11'> 
+				Nav Area
+				<form class="location-search" action="#">
+					<input type="text" id="search-term" placeholder="Search for a City" name="search">
+					<button type="submit" id="run-search" ><i  class="fa fa-search"></i></button>
+				</form>
+			</div> 
+			
+			<div class = 'col-sm-1 weather-content'> 
+
+			</div>
+
+		</div>
+	</div>
+	
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+	<!-- jQuery JS -->
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+	<!-- Code to the JavaScript File -->
+	<script src="weather.js"></script>
+	<script src="https://kit.fontawesome.com/2dd3ac296d.js" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
