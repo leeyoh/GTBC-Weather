@@ -42,8 +42,12 @@ $( document ).ready(function() {
 	function updateUV(elem){
 		var ul = $('.weather-info')
 		var li = $('<li>')
-		li.append('<span> UV Index: </span>')
-		li.append('<span>' + elem.value)
+		li.append($('<span> UV Index: </span>').addClass('title3'))
+		var uv = $('<span>' + elem.value + '</span>');
+		uv.addClass('uv')
+		li.append(uv)
+		li.append('<br>')
+		li.append('<br>')
 		ul.append(li)
 
 	}
@@ -51,6 +55,7 @@ $( document ).ready(function() {
 	
 		var cont = $('.weather-content')
 		var div = $('<div>').addClass('weather-current')
+
 		var ul = $('<ul></ul>').addClass('weather-info')
 
 		var imgURL = 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '.png'
@@ -69,25 +74,32 @@ $( document ).ready(function() {
 		}
 
 		var li = $('<li>')
-		li.append('<span>' + data.name + '</span>')
-		li.append('<span>' + formattedTime +'</span>')
+		li.append('<br>')
+		li.append('<span>' + data.name + '  </span>').addClass('title2')
+		li.append('<span>' + formattedTime +'  </span>').addClass('title2')
 		li.append('<img src=' + imgURL + '></img>')
+		li.append('<br>')
 		ul.append(li)
 
 		var li = $('<li>')
-		li.append('<span> Temperature: </span>')
-		li.append('<span>' + data.main.temp +' K </span>')
+		li.append('<span> Temperature: </span>').addClass('title3')
+		li.append('<span>' + data.main.temp +' K </span>').addClass('title3')
+		li.append('<br>')
 		ul.append(li)
 
 		var li = $('<li>')
-		li.append('<span> Humidity: </span>')
-		li.append('<span>' + data.main.humidity +' % </span>')
+		li.append('<span> Humidity: </span>').addClass('title3')
+		li.append('<span>' + data.main.humidity +' % </span>').addClass('title3')
+		li.append('<br>')
 		ul.append(li)
 
 		var li = $('<li>')
-		li.append('<span> Wind Speed: </span>')
-		li.append('<span>' + data.wind.speed +' MPH </span>')
+		li.append('<span> Wind Speed: </span>').addClass('title3')
+		li.append('<span>' + data.wind.speed +' MPH </span>').addClass('title3')
+		li.append('<br>')
 		ul.append(li)
+
+
 
 		div.append(ul)
 		row.append(div)
@@ -112,18 +124,18 @@ $( document ).ready(function() {
 			if(elem.dt_txt.split(' ')[1] == '03:00:00'){
 				
 
-				var card = $('<div>').addClass('card').addClass('col-sm-2')
+				var card = $('<div>').addClass('card').addClass('col-sm mr-4')
 				var cardhead = $('<div>').addClass('card-header')
 				var cardbody = $('<div>').addClass('card-body')
 				var cardfoot = $('<div>').addClass('card-footer')
 				var imgURL = 'http://openweathermap.org/img/wn/' + elem.weather[0].icon + '.png'
 				
-				cardhead.append($('<p>').text(elem.dt_txt.split(' ')[0]))
+				cardhead.append($('<p>').text(elem.dt_txt.split(' ')[0])).addClass('title3')
 				cardbody.append('<img src=' + imgURL + '></img>')
-				cardfoot.append($('<span>').text('Temp:'))
+				cardfoot.append($('<span>').text('Temp: '))
 				cardfoot.append($('<span>').text(elem.main.temp + ' K'))
 				cardfoot.append($('<br>'))
-				cardfoot.append($('<span>').text('Humidity:'))
+				cardfoot.append($('<span>').text('Humidity: '))
 				cardfoot.append($('<span>').text(elem.main.humidity + ' %'))
 
 				card.append(cardhead)
@@ -166,8 +178,6 @@ $( document ).ready(function() {
 				cities.push(cityName)
 			}
 			
-			
-			console.log(cities)
 			localStorage.setItem('cities', JSON.stringify(cities));
 
 
@@ -190,7 +200,7 @@ $( document ).ready(function() {
 				url: queryURLs.uvIndex + $.param(uvParams),
 				method: "GET"
 			}).then(function(response){
-				
+			
 				updateUV(response)
 
 			});
