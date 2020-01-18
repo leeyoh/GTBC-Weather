@@ -5,10 +5,22 @@ $( document ).ready(function() {
 		long:0,
 		lat:0,
 	}
-
+	var cities 
 	var row = $('#row')
+	var city = $('.city')
+	
+	var tempCities = JSON.parse(localStorage.getItem('cities'));
 
-	//todo localstorage for search history and current location data 
+	if(typeof(tempCities) != "undefined" && tempCities != null){
+
+		tempCities.forEach(function(key){
+			var button = $('<button>' + key+ '</button>' ); 
+			button.addClass('citySearch')
+			button.attr("city", key )
+			city.append(button)
+		})
+	}
+
 
 	if (!navigator.geolocation) {
 		status.textContent = 'Geolocation is not supported by your browser';
@@ -27,7 +39,14 @@ $( document ).ready(function() {
 		console.log(error)
 	}
 
+	function updateUV(elem){
+		var ul = $('.weather-info')
+		var li = $('<li>')
+		li.append('<span> UV Index: </span>')
+		li.append('<span>' + elem.value)
+		ul.append(li)
 
+	}
 	function updateCurrent(data){
 	
 		var cont = $('.weather-content')
@@ -42,6 +61,12 @@ $( document ).ready(function() {
 		var seconds = "0" + date.getSeconds();
 		var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 
+
+		if(cont.children().length > 0 ){
+			cont.empty()
+		} else {
+			city.toggleClass('col-sm-11 col-sm-3');
+		}
 
 		var li = $('<li>')
 		li.append('<span>' + data.name + '</span>')
@@ -68,7 +93,9 @@ $( document ).ready(function() {
 		row.append(div)
 	
 		cont.append(div).addClass('col-sm-9')
-		$('.city').toggleClass('col-sm-11 col-sm-3');
+		
+
+		
 		
 	}
 
@@ -76,23 +103,28 @@ $( document ).ready(function() {
 		
 
 		var cont = $('.weather-content')
+		
 		var div = $('<div>').addClass('weather-forecast').addClass('row')
 
 
 		data.list.forEach(function(elem){
 			
 			if(elem.dt_txt.split(' ')[1] == '03:00:00'){
-				console.log(elem)
-
+				
 
 				var card = $('<div>').addClass('card').addClass('col-sm-2')
 				var cardhead = $('<div>').addClass('card-header')
-				//cardhead.text = elem
-
 				var cardbody = $('<div>').addClass('card-body')
 				var cardfoot = $('<div>').addClass('card-footer')
-
-				cardhead.append($('<span>').text('test'))
+				var imgURL = 'http://openweathermap.org/img/wn/' + elem.weather[0].icon + '.png'
+				
+				cardhead.append($('<p>').text(elem.dt_txt.split(' ')[0]))
+				cardbody.append('<img src=' + imgURL + '></img>')
+				cardfoot.append($('<span>').text('Temp:'))
+				cardfoot.append($('<span>').text(elem.main.temp + ' K'))
+				cardfoot.append($('<br>'))
+				cardfoot.append($('<span>').text('Humidity:'))
+				cardfoot.append($('<span>').text(elem.main.humidity + ' %'))
 
 				card.append(cardhead)
 				card.append(cardbody)
@@ -108,7 +140,7 @@ $( document ).ready(function() {
 	}
 
 
-	function buildQueryURLs(isCity) {
+	function buildQueryURLs(cityName) {
 		
 		var queryURLs = {
 			currentInfo:'https://api.openweathermap.org/data/2.5/weather?',
@@ -120,14 +152,30 @@ $( document ).ready(function() {
 		var queryParams = { "appid": key };
 
 
-		if(isCity){
-			queryParams.q = $("#search-term").val().trim();
+		if(cityName != ""){	
+			var button = $('<button>' + cityName+ '</button>' ); 
+			button.addClass('citySearch')
+			button.attr("city", cityName )
+			queryParams.q =cityName
+			cities = $('.citySearch').map(function() {
+				return $(this).attr('city');   // or just `return this.title`
+			}).get();	
+
+			if(!cities.includes(cityName)){
+				city.append(button)
+				cities.push(cityName)
+			}
+			
+			
+			console.log(cities)
+			localStorage.setItem('cities', JSON.stringify(cities));
+
+
 		}else{
 			queryParams.lat = location.lat
 			queryParams.lon = location.long
 		}
-		
-	
+			
 		$.ajax({
 			url: queryURLs.currentInfo + $.param(queryParams),
 			method: "GET"
@@ -143,7 +191,7 @@ $( document ).ready(function() {
 				method: "GET"
 			}).then(function(response){
 				
-				
+				updateUV(response)
 
 			});
 
@@ -155,17 +203,21 @@ $( document ).ready(function() {
 			});
 
 		})
-
 	}
 
 	$("#run-search").on("click", function(event) {
 		console.log('click')
 		event.preventDefault();	
-		buildQueryURLs(true);
+		buildQueryURLs( $("#search-term").val().trim());
 	});
 
+ 	$(document).on("click", ".citySearch", function(event){
 
-
-
+		event.preventDefault();	
+		var cityResearch = $(this).attr("city")
+		$("#search-term").val(cityResearch) 
+		buildQueryURLs(cityResearch)
+		
+	});
 
 });
