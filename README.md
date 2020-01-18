@@ -1,5 +1,9 @@
 # Unit 06 Server-Side APIs Homework: Weather Dashboard
 
+https://leeyoh.github.io/GTBC-Weather/
+
+![alt text](Assets/WeatherDash)
+
 Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. In this homework assignment, your challenge is to build a weather dashboard using the OpenWeather API.
 
 
@@ -49,7 +53,6 @@ How do you deliver this? Here are some guidelines:
 
   * Humidity
 
-![weather dashboard](./Assets/06-Server-Side-APIs-homework-demo.png)
 
 
 ### Hints
